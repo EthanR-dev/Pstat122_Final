@@ -7,8 +7,8 @@ editor: visual
 ```{r Libraries}
 library(car)
 library(emmeans)
-library(ggplot2)
-library(dplyr)
+library(tidyverse)
+library(knitr)
 ```
 
 
@@ -27,16 +27,24 @@ sample(treatments)
 # data
 data <- read.csv("Final_Data.csv")
 
-head(data)
+# get factors in their own columns
+# font color levels: black (-), red (+)
+# font size levels: small (-), large (+)
 
-# randomizing assignments
-set.seed(21)
+read_speed <- data |>
+  mutate("Font Color" = str_detect(Text.Settings, "red, small") | str_detect(Text.Settings, "red, large"),
+         "Font Size" = str_detect(Text.Settings, "black, large") | str_detect(Text.Settings, "red, large")) |>
+  rename("Time" = Time..s.) |>
+  select(`Font Color`, `Font Size`, `Time`)
 
-text_settings <- c("black, small", "black, large", "red, small", "red, large")
+read_speed$`Font Color` <- factor(read_speed$`Font Color`,
+                                  levels = c(TRUE, FALSE),
+                                  labels = c("Red", "Black"))
 
-treatments <- rep(text_settings, each = 4)
+read_speed$`Font Size` <- factor(read_speed$`Font Size`,
+                                 levels = c(TRUE, FALSE),
+                                 labels = c("Large", "Small"))
 
-sample(treatments)
-
+kable(read_speed)
 ```
 
