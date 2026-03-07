@@ -79,8 +79,11 @@ sample(treatments)
 
 
 # Data Collection
-- **Procedure**: Describe how and when the experiment was conducted (e.g., location, date, steps taken).
-- **Challenges/Adjustments**: Mention any difficulties or changes made during data collection (e.g., technical issues, time adjustments).
+The experiment was conducted at a residential home during midday. Participants were recruited from the experimenters' pool of roommates. Each participant was given a text excerpt that had been randomized per individual to control for order effects. Participants were instructed: "Read this excerpt at the usual reading speed at which you retain information well." Reading time was measured in seconds, beginning when the participant started reading and ending when they indicated they were finished.
+
+
+One limitation noted during data collection was that participants were not explicitly instructed whether to read silently or aloud. While all participants appeared to follow the general instructions, those who read silently may have unintentionally skimmed the text rather than reading at their true normal pace, potentially affecting the accuracy of the recorded times. The experiment was conducted in a quiet room to minimize external distractions. No trials were repeated, as the experiment was designed as a single-attempt format. Any natural variation in performance was considered part of the data. Timing was measured consistently using a phone timer, initiated by the researcher upon signaling "start" and stopped when the participant indicated "done."
+
 - **Data Presentation**: Display the collected data in tables or graphs, summarizing key measures like mean and standard deviation.
 
 ```{r}
@@ -91,10 +94,12 @@ data <- read.csv("Final_Data.csv")
 # font size levels: small (-), large (+)
 
 read_speed <- data |>
-  mutate("Font Color" = str_detect(Text.Settings, "red, small") | str_detect(Text.Settings, "red, large"),
-         "Font Size" = str_detect(Text.Settings, "black, large") | str_detect(Text.Settings, "red, large")) |>
-  rename("Time" = Time..s.) |>
-  select(`Font Color`, `Font Size`, `Time`)
+  mutate(
+    `Font Color` = str_detect(Text.Settings, "red, small") | str_detect(Text.Settings, "red, large"),
+    `Font Size`  = str_detect(Text.Settings, "black, large") | str_detect(Text.Settings, "red, large")
+  ) |>
+  rename(Time = Time..s.) |>
+  select(Person, `Font Color`, `Font Size`, Time)
 
 read_speed$`Font Color` <- factor(read_speed$`Font Color`,
                                   levels = c(TRUE, FALSE),
@@ -104,11 +109,33 @@ read_speed$`Font Size` <- factor(read_speed$`Font Size`,
                                  levels = c(TRUE, FALSE),
                                  labels = c("Large", "Small"))
 
-read_speed
 kable(read_speed)
 ```
+```{r}
+kable(summary_stats,
+      col.names = c("Font Color", "Font Size", "Mean (s)", "SD (s)", "N"),
+      caption   = "Table 1: Summary Statistics of Reading Time by Treatment Group",
+      align     = c("l", "l", "c", "c", "c"),
+      digits    = 2,
+      format    = "pipe")
+```
+```{r}
+interaction.plot(
+  x.factor     = read_speed$`Font Size`,
+  trace.factor  = read_speed$`Font Color`,
+  response      = read_speed$Time,
+  fun           = mean,
+  type          = "b",
+  col           = c("red", "black"),
+  pch           = c(16, 17),
+  lty           = 1,
+  xlab          = "Font Size",
+  ylab          = "Mean Reading Time (s)",
+  trace.label   = "Font Color",
+  main          = "Interaction Plot of Font Size and Font Color on Reading Time"
+)
 
-
+```
 # Analysis
 - **Exploratory Data**: Start with basic statistics (mean, SD) and visualizations (e.g., boxplots) to understand the data.
 
