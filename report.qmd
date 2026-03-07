@@ -145,7 +145,9 @@ interaction.plot(
 
 ```
 # Analysis
-- **Exploratory Data**: Start with basic statistics (mean, SD) and visualizations (e.g., boxplots) to understand the data.
+Before conducting formal hypothesis testing, exploratory analysis was performed to understand the structure and variability of the data. Summary statistics were computed for each of the four treatment combinations (Table 1). Both the Red/Large and Black/Large groups yielded mean reading times of approximately 30 seconds (30.23s and 30.53s, respectively), while the Small font groups were noticeably faster — Red/Small averaged 20.87s and Black/Small averaged 18.14s. This initial inspection suggests that font size may have a meaningful effect on reading time, while font color appears to have a comparatively minor influence.
+
+The interaction plot (Figure 1) further supports this observation. The two lines — one for Red and one for Black — follow nearly the same downward trajectory from Large to Small font size, indicating little to no interaction between font color and font size. If a strong interaction were present, the lines would cross or diverge substantially. The near-parallel pattern suggests that the effect of font size on reading time is consistent regardless of font color. Taken together, the exploratory analysis points to font size as the primary driver of reading time, with font color playing a negligible role.
 
 - **Hypothesis Testing**: Test your hypothesis with an appropriate statistical test (e.g., ANOVA).
 
