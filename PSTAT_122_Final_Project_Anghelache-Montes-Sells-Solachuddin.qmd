@@ -33,7 +33,7 @@ knitr::opts_chunk$set(error = FALSE)
 </div>
 - Ethan Anghelache    (A059728)
 - Miriam Montes    (NetID 2)
-- Joanna Sells    (NetID 3)
+- Joanna Sells    (A591498)
 - Saarah Solachuddin    (A0P1751)
 :::
 
@@ -289,7 +289,7 @@ From our resulting table, we can conclude that font size alone overall is the dr
 
 # References
 
-Add reference for the study in intro here!
+Comparing the Legibility and Comprehension of Type Size, Font Selection and Rendering Technology of Onscreen Type (Scott B. Chandler) https://vtechworks.lib.vt.edu/server/api/core/bitstreams/4dc7b456-3ea7-4bca-93d4-d58b53101aed/content
 
 
 # Appendices
