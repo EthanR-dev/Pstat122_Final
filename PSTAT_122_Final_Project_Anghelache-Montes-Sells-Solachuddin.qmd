@@ -23,6 +23,7 @@ format:
 knitr::opts_chunk$set(message = FALSE)
 knitr::opts_chunk$set(warning = FALSE)
 knitr::opts_chunk$set(error = FALSE)
+
 ```
 
 
@@ -49,6 +50,7 @@ library(emmeans)
 library(tidyverse)
 library(knitr)
 library(broom)
+
 ```
 
 
@@ -115,11 +117,10 @@ Therefore, the effects model can be expressed as: $$Y_{ijk} = \mu + \tau_i + \be
 
 ## Implementation
 
-To implement randomization, a list of 16 readers was compiled in no particular order. Each participant was randomly assigned to one of the four treatment combinations using an `R` sampling code. This ensures that every participant had an equal probability of being assigned to any given treatment.
+To implement randomization, a list of 16 readers was compiled in no particular order on a Google sheet. Each participant was randomly assigned to one of the four treatment combinations using an `R` sampling code. This ensures that every participant had an equal probability of being assigned to any given treatment.\
 
-The data collection was randomized by using the following code and assigning the treatments in the same order to the list of participant names on a Google sheet:
-
-```{r, results = FALSE}
+```{r, include = FALSE}
+# randomizing assignments
 set.seed(21)
 
 text_settings <- c("black, small", "black, large",
@@ -128,6 +129,7 @@ text_settings <- c("black, small", "black, large",
 treatments <- rep(text_settings, each = 4)
 
 sample(treatments)
+
 ```
 
 
@@ -139,12 +141,11 @@ One limitation noted during data collection was that participants were not expli
 
 The following tables present our collected data---categorized by our two factors and each participants' reading speed---and our key summary statistics:
 
-```{r}
-data <- read.csv("Final_Data.csv")
-
+```{r, echo = FALSE}
 # get factors in their own columns
 # font color levels: black (-), red (+)
 # font size levels: small (-), large (+)
+data <- read.csv("Final_Data.csv")
 
 read_speed <- data |>
   mutate("Font Color" = str_detect(Text.Settings, "red, small") |
@@ -164,10 +165,12 @@ read_speed$`Font Size` <- factor(read_speed$`Font Size`,
 
 kable(read_speed,
       caption = "Reading Time by Factors Data Collection")
+
 ```
 
 
-```{r}
+```{r, echo = FALSE}
+# get key summary stats of our data
 summary_stats <- read_speed |>
   group_by(`Font Size`, `Font Color`) |>
   summarise(Mean = round(mean(Time), 2),
@@ -177,6 +180,7 @@ summary_stats <- read_speed |>
 kable(summary_stats,
       col.names = c("Font Size", "Font Color", "Mean (s)", "SD (s)", "N"),
       caption = "Summary Statistics of Reading Time by Treatment Group")
+
 ```
 
 
@@ -188,7 +192,8 @@ Before conducting formal hypothesis testing, exploratory analysis was performed 
 
 These findings are visualized and supported through the following figure: 
 
-```{r}
+```{r, echo = FALSE, fig.align = "center"}
+# boxplots to compare means
 ggplot(read_speed, aes(x = `Font Size`,
                        y = `Time`,
                        fill = `Font Color`)) +
@@ -197,11 +202,13 @@ ggplot(read_speed, aes(x = `Font Size`,
   labs(y = "Reading Time (s)",
        title = "Figure 1: Reading Time Commparisons with Boxplots") +
   theme_bw()
+
 ```
 
 To further investigate our pre-test analysis, we gathered observations from the following interaction plot:
 
-```{r}
+```{r, echo = FALSE, fig.align = "center"}
+# interaction plot
 ggplot(summary_stats, aes(x = `Font Size`,
                           y = Mean,
                           color = `Font Color`,
@@ -212,6 +219,7 @@ ggplot(summary_stats, aes(x = `Font Size`,
   labs(y = "Mean Reading Time (s)",
        title = "Figure 2: Interaction Plot of Font Size and Font Color on Reading Time") + 
   theme_bw()
+
 ```
 
 The interaction plot (Figure 2) reads slightly differently from our previous observations. The two lines---one for Red and one for Black---follow nearly the same downward trajectory from Large to Small font size, however, the two lines intersect close to the Large font size, indicating there is an interaction present as these lines are not parallel. The interaction suggests that when the font size is Large, the font colors have little to no difference, but when the font is Small, Black font has a clearer advantage over Red font.
@@ -257,13 +265,15 @@ $(\tau \beta)_{ij}$ represents the combination of our two treatments, and we tes
 
 A two-way ANOVA table tests our hypotheses simultaneously, as follows:
 
-```{r}
+```{r, echo = FALSE}
+# generate ANOVA table
 anova <- aov(`Time` ~ `Font Size` * `Font Color`, read_speed)
 
 kable(tidy(anova),
       digits = 3,
       col.names = c("Sources of Variation", "degrees of freedom", "Sum of Squares", "Mean Square", "F", "p-value"),
       caption = "ANOVA Table")
+
 ```
 
 From our resulting table, we can conclude that font size alone overall is the driving factor of an individual's reading speed. Font size yields a p-value of 0.025, a value smaller than our significance level $\alpha = 0.05$. Thus, we reject our null hypothesis ($H_0$) that font size at both levels has equal impact on an individual's reading speed, meaning there is a statistically significant difference between Small and Large font while reading. From our previous findings, we can also conclude that Small font in particular helps an individual read faster. Font color as a factor yielded a p-value of 0.78, a value larger than $\alpha$, meaning we fail to reject the null hypothesis that there is no difference in impact on reading speed between the two levels, Red and Black font. Finally, the interaction between our two factors yielded a p-value of 0.728, a value also larger than $\alpha$, indicating a failure to reject the null hypothesis, furthermore meaning there is no significant evidence of an interaction effect between the two in our data. Our two factors appear to behave independent of one other.
