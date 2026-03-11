@@ -170,14 +170,6 @@ kable(summary_stats,
 
 # Analysis
 
-- **Exploratory Data**: Start with basic statistics (mean, SD) and visualizations (e.g., boxplots) to understand the data.
-
-- **Hypothesis Testing**: Test your hypothesis with an appropriate statistical test (e.g., ANOVA).
-
-- **Tables, Figures, & Code**: Include key results (ANOVA table, post-test) and relevant `R` code excerpts where needed.
-
--	Use `R` to analyze the data.
-
 ## Exploratory Analysis
 
 Before conducting formal hypothesis testing, exploratory analysis was performed to understand the structure and variability of the data. Summary statistics were computed for each of the four treatment combinations (Table 2). The Large font size group at both levels of font color yielded mean reading times of approximately 30 seconds (30.23s and 30.53s, respectively), while the Small font groups were noticeably faster---Red/Small averaged 20.87s and Black/Small averaged 18.14s. This initial inspection suggests that font size may have a meaningful effect on reading time, while font color appears to have a comparatively minor influence.
