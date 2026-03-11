@@ -15,15 +15,14 @@ format:
     toc: false
     toc-location: left
     number-sections: true
-    geometry: margin=0.25in
+    geometry: margin=0.3in
 
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(message = FALSE)
 knitr::opts_chunk$set(warning = FALSE)
 knitr::opts_chunk$set(error = FALSE)
-knitr::opts_chunk$set(echo = FALSE)  
 ```
 
 
@@ -44,7 +43,7 @@ knitr::opts_chunk$set(echo = FALSE)
 :::
 
 
-```{r Libraries}
+```{r libraries, include = FALSE}
 library(car)
 library(emmeans)
 library(tidyverse)
@@ -55,57 +54,70 @@ library(broom)
 
 # Introduction
 
-The purpose of this experiment is to determine whether the visual characteristics of text influence reading speed. Specifically, we are investigating how two formatting factors, font size and color, affect the speed at which individuals read a short passage. A $2^2$ factorial design is used to examine both the individual effects of font size (10 pt and 18 pt) and font color (black and red), as well as the potential interaction between these factors. The interaction effect would indicate whether the influence of one factor changes depending on the level of the other.
+The purpose of this experiment is to determine whether the visual characteristics of text influence reading speed. Specifically, we are investigating how two formatting factors, font size and color, affect the speed at which individuals read a short passage. In this experiment, we are using a $2^2$ factorial design to examine both the individual effects of font size (10 pt and 18 pt) and font color (black and red), as well as the potential interaction between these factors. The interaction effect would indicate whether the influence of one factor changes depending on the level of the other.
  
-Text formatting plays an important role in readability, especially in today’s world where we regularly read information on both digital screens and printed materials. Differences in font size and color can affect visual clarity and may influence how quickly a reader can move through a passage. Since these formatting choices are commonly used in digital content, educational resources and professional documents, understanding how they influence reading speed may help inform more effective design decisions that improve readability.
+Text formatting plays an important role in readability, especially in today’s world where we regularly read information on both digital screens and printed materials. Differences in font size and color can affect visual clarity and may influence how quickly a reader moves through a passage. Since these formatting choices are commonly used in digital content, educational resources, professional documents, and more, understanding how they influence reading speed may help inform more effective visual design decisions to improve readability.
  
 Previous research has also examined how font size affects reading speed. For example, a study by Scott B. Chandler at Virginia Tech tested participants reading text in different font sizes and found that larger font sizes were generally read more quickly than smaller ones. Based on these findings, we expect that passages presented in a larger font size (18 pt) will be read more quickly than those presented in a smaller font size (10 pt). We also expect that black text may lead to faster reading speeds than red text because it is the most commonly used color in standard reading materials.
+
 
 # Experimental Design
 
 In this experiment, we will be testing if visual presentation variables (font, color) significantly impact reading speed.
 
 ## Factors and Treatment Structure
-There are two treatments, font size and font color, with two levels each: black font or red font, in small text (10 pt) and large text (18 pt), which create four unique treatment combinations:
 
-| Font Color | Small Font        | Large Font        | 
-|------------|-------------------|-------------------|
-| Red   | Red, 10 pt   | Red, 18pt   |
-| Black | Black 10 pt | Black, 18 pt |
+There are two treatments, font size and font color, with two levels each: black font or red font, in small text (10 pt) and large text (18 pt), creating four unique treatment combinations:
+
+:::callout
+Small (10 pt), red font
+
+Large (18 pt), red font
+
+Small (10 pt), black font
+
+Large (18 pt), black font
+:::
 
 ## Experimental Units
-The experimental units are 16 individual readers. The response variable is the reading speeds measured by the time taken (in seconds) to read the same 133-word excerpt.
+
+There are 16 individual readers. The response variable is the reading speeds measured by the time taken (in seconds) to read the same 133-word excerpt.
 
 ## Factors Classification
-This experiment will be conducted as a $2^2$ factorial design with a CRD framework, with 2 factors, each with 2 levels:
+
+This experiment will be conducted as a $2^2$ factorial design with a CRD framework, with two factors and two levels per factor:
+
 - Factor A: Font Size. This is a fixed factor, with two levels at 10 pt or 18 pt. 
+
 - Factor B: Font Color. This is a fixed factor, also with two levels in red or black. 
 
 ## Sample Size
-With four different treatment combinations, we have a total of 16 observations and a total of 16 readers randomly assigned to one of four of the treatment combinations.
+
+With four different treatment combinations, as well as four readers per treatment combination, we have a total of 16 observations/readers randomly assigned to the treatment combinations.
 
 ## Design Type: Complete Randomized Design
+
 When conducting this experiment, we did not use any blocking. With a total of 16 readers, we randomized the assignment of each treatment to one per person. 
 
 ## Statistical Model
+
 For this completely randomized factorial design, we have 
 
-1. 2 levels for Factor A: Font Size
-2. 2 levels for Factor B: Font Color
-3. 4 replicates within each treatment combination
+:::callout
+1. Two levels for Factor A: Font Size
 
-Therefore, the effects model can be expressed as:
+2. Two levels for Factor B: Font Color
 
-$$Y_{ijk} = \mu + \tau_i + \beta_j + (\tau\beta)_{ij}+ \epsilon_{ijk}$$ with i = 1,2; j = 1,2; k = 1,2,3,4. The error term $$\epsilon$$ represents the variation between people.
+3. Four replicates within each treatment combination
+:::
+
+Therefore, the effects model can be expressed as: $$Y_{ijk} = \mu + \tau_i + \beta_j + (\tau\beta)_{ij}+ \epsilon_{ijk}$$ with i = 1,2; j = 1,2; k = 1,2,3,4. The error term $\epsilon$ represents the variation between people.
 
 ## Implementation
- Then assignments were randomized using a sampling code generated in R to assign four participants to each of the four treatment groups.
 
-To implement randomization, we created a list of 16 readers was compiled in no particular order. Each participant was randomly assigned to one of the four treatment combinations using a sampling code in R. This ensures that every participant had an equal probability of being assigned to any given treatment.
+To implement randomization, a list of 16 readers was compiled in no particular order. Each participant was randomly assigned to one of the four treatment combinations using an `R` sampling code. This ensures that every participant had an equal probability of being assigned to any given treatment.
 
-
-
-The data collection was randomized by using the following code and assigning the treatments to the list of participant names on a Google sheet in the same order:
+The data collection was randomized by using the following code and assigning the treatments in the same order to the list of participant names on a Google sheet:
 
 ```{r, results = FALSE}
 set.seed(21)
@@ -125,7 +137,7 @@ The experiment was conducted midday at each experimenter's residential home in a
 
 One limitation noted during data collection was that participants were not explicitly instructed whether to read silently or aloud. While all participants appeared to follow the general instructions, those who read silently may have unintentionally skimmed the text rather than reading at their true normal pace, potentially affecting the accuracy of the recorded times. The experiment was conducted in a quiet room to minimize external distractions. No trials were repeated, as the experiment was designed as a single-attempt format. Any natural variation in performance was considered part of the data. Timing was measured consistently using a phone timer, initiated by the researcher upon signaling "start" and stopped when the participant indicated "done."
 
-The following tables present our collected data are categorized by two factors and each participants' reading speed and key summary statistics:
+The following tables present our collected data---categorized by our two factors and each participants' reading speed---and our key summary statistics:
 
 ```{r}
 data <- read.csv("Final_Data.csv")
@@ -265,7 +277,7 @@ From our resulting table, we can conclude that font size alone overall is the dr
 
 # References
 
-(If needed.)
+Add reference for the study in intro here!
 
 
 # Appendices
