@@ -296,8 +296,20 @@ Font color as a factor yielded a p-value of 0.102, a value larger than $\alpha$,
 
 # Conclusions
 
-- Summarize key findings.
-- Comment on limitations and possible improvements.
+The goal of this experiment was to determine whether font size and color of text affects reading speed. Using a $3^2$ factorial design within a completely randomized framework, we examined the effects of three font sizes (10 pt, 14 pt and 18 pt) and three font colors (black, red and green) on the time required to read a short paragraph. 
+
+The results of the two way ANOVA indicate that font size has a statistically significant effect on reading time, whilst font color and the interaction between font size and font color are not statistically significant. With a p-value of 0.003 for font size, we reject the null hypothesis that the mean reading times are equal across all font sizes. The exploratory analysis and summary statistics show that larger font sizes tends to produce shorter reading times, suggesting that larger text improves readability and allows participants to process written information more quickly. This result is consistent with what we expected from prior research. 
+
+In contrast, font color did not significantly influence reading speed (p=0.102). Although the descriptive statistics suggested slightly faster reading times for black text compared to red or green text, these differences were not statistically significant at the 5% level. Additionally, interaction between font size and color was not significant (p=0.939), indicating that the effect of font size on reading speed is consistent across different text colors. The interaction plot supported this conclusion, as the lines representing the three font colors remained approximately parallel across the levels of different font sizes. 
+
+Whilst these findings provide evidence that font size is an important factor affecting reading speed, several limitations of the study should be acknowledged. The experiment included only sixteen participants, many of whom were recruited from similar social circles. This convenience sample may limit the generalizability of the results to a broader population. Additionally, participants completed multiple reading trials, which could introduce learning effects or fatigue that may influence reading performance across treatments. Participants were also not explicitly instructed whether to read silently or aloud, which may have introduced variability in reading behavior. Finally, reading times were measured manually using a phone timer, which may introduce small measurement errors. 
+
+Future studies could strengthen the reliability of these results by using a larger and more diverse participant pool, standardizing reading instructions, and incorporating automated timing methods. Including comprehension checks or additional formatting factors such as font type, line spacing or background color could also provide further insight into how visual design influences readability. 
+
+Overall, the results of this experiment suggest that larger font sizes improve reading speed, whilst font color alone does not significantly affect reading performance. These findings highlight the importance of font size in design considerations when presenting written information or printed material. 
+
+
+
 
 
 # References
