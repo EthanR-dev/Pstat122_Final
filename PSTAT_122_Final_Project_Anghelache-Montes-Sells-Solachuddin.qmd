@@ -33,7 +33,7 @@ knitr::opts_chunk$set(error = FALSE)
 </div>
 - Ethan Anghelache    (A059728)
 - Miriam Montes    (4538575)
-- Joanna Sells    (NetID 3)
+- Joanna Sells    (A591498)
 - Saarah Solachuddin    (A0P1751)
 :::
 
