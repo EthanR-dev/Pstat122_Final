@@ -32,8 +32,8 @@ knitr::opts_chunk$set(error = FALSE)
 <span style="color: blue;"> **STUDENT NAME **</span> 
 </div>
 - Ethan Anghelache    (A059728)
-- Miriam Montes    (NetID 2)
-- Joanna Sells    (A591498)
+- Miriam Montes    (4538575)
+- Joanna Sells    (NetID 3)
 - Saarah Solachuddin    (A0P1751)
 :::
 
@@ -56,67 +56,76 @@ library(broom)
 
 # Introduction
 
-The purpose of this experiment is to determine whether the visual characteristics of text influence reading speed. Specifically, we are investigating how two formatting factors, font size and color, affect the speed at which individuals read a short passage. A $3^2$ factorial design is used to examine both the individual effects of font size (10 pt, 14pt and 18 pt) and font color (red, green and black), as well as the potential interaction between these factors. The interaction effect would indicate whether the influence of one factor changes depending on the level of the other.
-
-Text formatting plays an important role in readability, especially in today’s world where we regularly read information on both digital screens and printed materials. Differences in font size and color can affect visual clarity and may influence how quickly a reader can move through a passage. Since these formatting choices are commonly used in digital content, educational resources and professional documents, understanding how they influence reading speed may help inform more effective design decisions that improve readability.
-
-Previous research has also examined how font size affects reading speed. For example, a study by Scott B. Chandler at Virginia Tech tested participants reading text in different font sizes and found that larger font sizes were generally read more quickly than smaller ones. Based on these findings, we expect that passages presented in a larger font size will be read more quickly than those presented in a smaller font size. We also expect that black text may lead to faster reading speeds than red or green text because it is the most commonly used color in standard reading materials.
-
+The purpose of this experiment is to determine whether the visual characteristics of text influence reading speed. Specifically, we are investigating how two formatting factors, font size and color, affect the speed at which individuals read a short passage. In this experiment, we are using a $3^2$ factorial design to examine both the individual effects of font size and font color at three levels each, as well as the potential interaction between these factors. The interaction effect would indicate whether the influence of one factor changes depending on the level of the other.
+ 
+Text formatting plays an important role in readability, especially in today’s world where we regularly read information on both digital screens and printed materials. Differences in font size and color can affect visual clarity and may influence how quickly a reader moves through a passage. Since these formatting choices are commonly used in digital content, educational resources, professional documents, and more, understanding how they influence reading speed may help inform more effective visual design decisions to improve readability.
+ 
+Previous research has also examined how font size affects reading speed. For example, a study by Scott B. Chandler at Virginia Tech tested participants reading text in different font sizes and found that larger font sizes were generally read more quickly than smaller ones. Based on these findings, we expect that passages presented in a larger font size (18 pt) will be read more quickly than those presented in a smaller font size (10 pt). We also expect that black text may lead to faster reading speeds than red text because it is the most commonly used color in standard reading materials.
 
 
 # Experimental Design
 
-In this experiment, we will be testing if visual presentation variables (font, color) significantly impact reading speed.
+We are motivated to improve design choices for readability, thus we will be testing how visual text settings (font size, color) impact reading speed. Participants are instructed to read at the best fit speed at which information retention is highest for themselves. We define readability as the rate of reading words while maintaining a consistent level of comprehension, thus a faster rate means better readability in this experiment.
 
 ## Factors and Treatment Structure
 
-There are two treatments, font size and font color, with two levels each: black font or red font, in small text or large text, creating four unique treatment combinations:
+There are two treatments, font size and font color, with three levels each: in order from highest to lowest contrast against a white background, black, red, and green font, and in order from smallest to largest text, 10 pt (small), 14 pt (medium), and 18 pt (large), creating nine unique treatment combinations:
 
 :::callout
+- Small (10 pt), green font
+
+- Medium (14 pt), green font
+
+- Large (18 pt), green font
+
 - Small (10 pt), red font
+
+- Medium (14 pt), red font
 
 - Large (18 pt), red font
 
 - Small (10 pt), black font
+
+- Medium (14 pt), black font
 
 - Large (18 pt), black font
 :::
 
 ## Experimental Units
 
-There are 16 individual readers. The response variable is the reading speeds measured by the time taken (in seconds) to read the same 133-word excerpt.
+There are 16 experimental units/individual readers in total. All but six readers read three times according to their randomized treatment assignment; the six read four times. The response variable is the reading speeds measured by the time taken (in seconds) to read the same 133-word excerpt.
 
 ## Factors Classification
 
-This experiment will be conducted as a $2^2$ factorial design with a CRD framework, with two factors and two levels per factor:
+This experiment will be conducted as a $3^2$ factorial design with a CRD framework, with two factors and two levels per factor:
 
 :::callout
-- Factor A: Font Size. This is a fixed factor, with two levels at 10 pt or 18 pt.
+- Factor A: Font Size. This is a fixed factor, with three levels at 10 pt, 14 pt, or 18 pt.
 
-- Factor B: Font Color. This is a fixed factor, also with two levels in red or black.
+- Factor B: Font Color. This is a fixed factor, also with three levels in green, red, or black.
 :::
 
 ## Sample Size
 
-With four different treatment combinations, as well as four readers per treatment combination, we have a total of 16 observations/readers randomly assigned to the treatment combinations.
+With nine different treatment combinations, as well as six readers per treatment combination, we have a total of 54 observations/readers randomly assigned to the treatment combinations.
 
 ## Design Type: Complete Randomized Design
 
-When conducting this experiment, we did not use any blocking. With a total of 16 readers, we randomized the assignment of each treatment to one per person. 
+When conducting this experiment, we did not use any blocking. With a total of 16 readers, we randomized the assignment of each treatment to three or four per person.
 
 ## Statistical Model
 
 For this completely randomized factorial design, we have 
 
 :::callout
-1. Two levels for Factor A: Font Size
+1. Three levels for Factor A: Font Size
 
-2. Two levels for Factor B: Font Color
+2. Three levels for Factor B: Font Color
 
-3. Four replicates within each treatment combination
+3. Six replicates within each treatment combination
 :::
 
-Therefore, the effects model can be expressed as: $$Y_{ijk} = \mu + \tau_i + \beta_j + (\tau\beta)_{ij}+ \epsilon_{ijk}$$ with i = 1,2; j = 1,2; k = 1,2,3,4. The error term $\epsilon$ represents the variation between people.
+Therefore, the effects model can be expressed as: $$Y_{ijk} = \mu + \tau_i + \beta_j + (\tau\beta)_{ij}+ \epsilon_{ijk}$$ with i = 1, 2, 3; j = 1, 2, 3; k = 1, 2, 3, 4, 5, 6. The error term $\epsilon$ represents the variation between people.
 
 ## Implementation
 
@@ -126,10 +135,11 @@ To implement randomization, a list of 16 readers was compiled in no particular o
 # randomizing assignments
 set.seed(21)
 
-text_settings <- c("black, small", "black, large",
-                   "red, small", "red, large")
+text_settings <- c("black, small", "black, medium", "black, large",
+                   "red, small", "red, medium", "red, large",
+                   "green, small", "green, medium", "green, large")
 
-treatments <- rep(text_settings, each = 4)
+treatments <- rep(text_settings, each = 6)
 
 sample(treatments)
 
@@ -138,7 +148,7 @@ sample(treatments)
 
 # Data Collection
 
-The experiment was conducted midday at each experimenter's residential home in a quiet room on March 6, 2026. Participants were recruited from the experimenters' pool of roommates. Each participant was given the same text excerpt with a specific text setting (e.g. red text color with large font size) that had been randomized and assigned per individual to control for order effects. Participants were instructed: "Read this excerpt at the usual reading speed at which you retain information well." Reading time was measured in seconds, beginning when the participant started reading and ending when they indicated they were finished.
+The experiment was conducted midday at each experimenter's residential home in a quiet room on March 11, 2026. Participants were recruited from the experimenters' pool of roommates. Each participant was given the same text excerpt with a specific text setting (e.g. red text color with large font size) that had been randomized and assigned per individual to control for order effects. Participants were instructed: "Read this excerpt at the usual reading speed at which you retain information well." Reading time was measured in seconds, beginning when the participant started reading and ending when they indicated they were finished.
 
 One limitation noted during data collection was that participants were not explicitly instructed whether to read silently or aloud. While all participants appeared to follow the general instructions, those who read silently may have unintentionally skimmed the text rather than reading at their true normal pace, potentially affecting the accuracy of the recorded times. The experiment was conducted in a quiet room to minimize external distractions. No trials were repeated, as the experiment was designed as a single-attempt format. Any natural variation in performance was considered part of the data. Timing was measured consistently using a phone timer, initiated by the experimenter upon signaling "start" and stopped when the participant indicated "done."
 
@@ -146,25 +156,23 @@ The following tables present our collected data---categorized by our two factors
 
 ```{r, echo = FALSE}
 # get factors in their own columns
-# font color levels: black (-), red (+)
-# font size levels: small (-), large (+)
+# font color levels (highest to lowest contrast against white background): black (-1), red (0), green (1)
+# font size levels (smallest to largest font): small (-1), medium (0), large (1)
 data <- read.csv("Final_Data.csv")
 
 read_speed <- data |>
-  mutate("Font Color" = str_detect(Text.Settings, "red, small") |
-           str_detect(Text.Settings, "red, large"),
-         "Font Size" = str_detect(Text.Settings, "black, large") |
-           str_detect(Text.Settings, "red, large")) |>
+  mutate("Font Color" = factor(Text.Settings,
+                               levels = c("black, small", "black, medium", "black, large",
+                                          "red, small", "red, medium", "red, large",
+                                          "green, small", "green, medium", "green, large"),
+                               labels = rep(c("Black", "Red", "Green"), each = 3)),
+         "Font Size" = factor(Text.Settings,
+                              levels = c("black, small", "black, medium", "black, large",
+                                          "red, small", "red, medium", "red, large",
+                                          "green, small", "green, medium", "green, large"),
+                              labels = rep(c("Small", "Medium", "Large"), times = 3))) |>
   rename("Time" = Time..s.) |>
   select(`Font Size`, `Font Color`, `Time`)
-
-read_speed$`Font Color` <- factor(read_speed$`Font Color`,
-                                  levels = c(TRUE, FALSE),
-                                  labels = c("Red", "Black"))
-
-read_speed$`Font Size` <- factor(read_speed$`Font Size`,
-                                 levels = c(TRUE, FALSE),
-                                 labels = c("Large", "Small"))
 
 kable(read_speed,
       caption = "Reading Time by Factors Data Collection")
@@ -191,7 +199,7 @@ kable(summary_stats,
 
 ## Exploratory Analysis
 
-Before conducting formal hypothesis testing, exploratory analysis was performed to understand the structure and variability of the data. Summary statistics were computed for each of the four treatment combinations (Table 2). The Large font size group at both levels of font color yielded mean reading times of approximately 30 seconds (30.23s and 30.53s, respectively), while the Small font groups were noticeably faster---Red/Small averaged 20.87s and Black/Small averaged 18.14s. This initial inspection suggests that font size may have a meaningful effect on reading time, while font color appears to have a comparatively minor influence.
+Before conducting formal hypothesis testing, exploratory analysis was performed to understand the structure and variability of the data. Summary statistics were computed for each of the four treatment combinations (Table 2). Reading speed seems to be quicker at a larger font, i.e. 14 pt and 18 pt, than in the smaller 10 pt font. It seems that font color has a very slight impact on the reading speed, in that when the font color is black, the average time is slightly shorter compared to its other levels per level of font size. This initial inspection suggests that font size may have a meaningful effect on reading time, while font color appears to have a comparatively minor influence.
 
 These findings are visualized and supported through the following figure: 
 
@@ -200,10 +208,10 @@ These findings are visualized and supported through the following figure:
 ggplot(read_speed, aes(x = `Font Size`,
                        y = `Time`,
                        fill = `Font Color`)) +
-  scale_fill_manual(values = c("red", "darkgray")) +
+  scale_fill_manual(values = c("darkgray", "red", "green")) +
   geom_boxplot() + 
   labs(y = "Reading Time (s)",
-       title = "Figure 1: Reading Time Commparisons with Boxplots") +
+       title = "Figure 1: Reading Time Comparisons with Boxplots") +
   theme_bw()
 
 ```
@@ -216,22 +224,22 @@ ggplot(summary_stats, aes(x = `Font Size`,
                           y = Mean,
                           color = `Font Color`,
                           group = `Font Color`)) +
-  scale_color_manual(values = c("red", "black")) +
+  scale_color_manual(values = c("black", "red", "green")) +
   geom_point() +
   geom_line() +
   labs(y = "Mean Reading Time (s)",
-       title = "Figure 2: Interaction Plot of Font Size and Font Color on Reading Time") + 
+       title = "Figure 2: Interaction Plot of Font Size and Font Color") + 
   theme_bw()
 
 ```
 
-The interaction plot (Figure 2) reads slightly differently from our previous observations. The two lines---one for Red and one for Black---follow nearly the same downward trajectory from Large to Small font size, however, the two lines intersect close to the Large font size, indicating there is an interaction present as these lines are not parallel. The interaction suggests that when the font size is Large, the font colors have little to no difference, but when the font is Small, Black font has a clearer advantage over Red font.
+The interaction plot (Figure 2) expands on our previous observations. The three lines follow nearly the same trajectory from Small to Large font size. At no point do the lines intersect; they remain parallel throughout the trajectory, indicating there is no interaction present between our two factors. This allows us to look at our factors' main effects independently.
 
-Taken together, the exploratory analysis points to font size as the primary driver of a faster reading time. However, given the interaction plot, there is a visual pattern to suggest font color does interact with font size, meaning font color is dependent on font size.
+Taken together, the exploratory analysis points to font size as the primary driver of a faster reading time, and font color plays a less significant role in an individual's reading speed. To verify these observations about our data, we will turn to hypothesis testing.
 
 ## Hypothesis Testing
 
-To conduct our hypothesis testing for this $2^2$ factorial design experiment, we looked at three sets of hypotheses:
+To conduct our hypothesis testing for this $3^2$ factorial design experiment, we looked at three sets of hypotheses:
 
 :::callout
 1. The main effect of Font Size
@@ -279,7 +287,9 @@ kable(tidy(anova),
 
 ```
 
-From our resulting table, we can conclude that font size alone overall is the driving factor of an individual's reading speed. Font size yields a p-value of 0.025, a value smaller than our significance level $\alpha = 0.05$. Thus, we reject our null hypothesis ($H_0$) that font size at both levels has equal impact on an individual's reading speed, meaning there is a statistically significant difference between Small and Large font while reading. From our previous findings, we can also conclude that Small font in particular helps an individual read faster. Font color as a factor yielded a p-value of 0.78, a value larger than $\alpha$, meaning we fail to reject the null hypothesis that there is no difference in impact on reading speed between the two levels, Red and Black font. Finally, the interaction between our two factors yielded a p-value of 0.728, a value also larger than $\alpha$, indicating a failure to reject the null hypothesis, furthermore meaning there is no significant evidence of an interaction effect between the two in our data. Our two factors appear to behave independent of one other.
+From our resulting table, we can conclude that font size alone overall is the driving factor of an individual's reading speed in our data. Font size yields a p-value of 0.003, a value smaller than our significance level $\alpha = 0.05$. Thus, we reject our null hypothesis ($H_0$) that font size at all levels has equal impact on an individual's reading speed, meaning there is a statistically significant difference between the impact of small, medium, and large font size on the time it takes to read. From our previous findings, we can also conclude that our data points to larger fonts in particular as what helps an individual read faster. Thus, our data has sufficient evidence to point to larger font having better readability.
+
+Font color as a factor yielded a p-value of 0.102, a value larger than $\alpha$, meaning we fail to reject the null hypothesis that there is no difference in impact on reading speed between the three levels, green, red, and black font. The interaction between our two factors yielded a p-value of 0.939, a value also larger than $\alpha$, indicating a failure to reject the null hypothesis, furthermore meaning there is no significant evidence of an interaction effect between the two in our data. Our two factors appear to behave independent of one other.
 
 
 # Conclusions
