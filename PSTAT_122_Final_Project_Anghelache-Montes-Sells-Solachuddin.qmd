@@ -97,17 +97,19 @@ There are 16 experimental units/individual readers in total. All but six readers
 
 ## Factors Classification
 
-This experiment will be conducted as a $3^2$ factorial design with a CRD framework, with two factors and two levels per factor:
+This experiment will be conducted as a $3^2$ factorial design with a CRD framework, with two factors and three levels per factor:
 
 :::callout
 - Factor A: Font Size. This is a fixed factor, with three levels at 10 pt, 14 pt, or 18 pt.
 
-- Factor B: Font Color. This is a fixed factor, also with three levels in green, red, or black.
+- Factor B: Font Color. This is a fixed factor, with three levels in green, red, or black.
 :::
 
 ## Sample Size
 
 With nine different treatment combinations, as well as six readers per treatment combination, we have a total of 54 observations/readers randomly assigned to the treatment combinations.
+
+$$(10*3) + (6*4) = 54\text{ observations total}$$
 
 ## Design Type: Complete Randomized Design
 
@@ -129,7 +131,7 @@ Therefore, the effects model can be expressed as: $$Y_{ijk} = \mu + \tau_i + \be
 
 ## Implementation
 
-To implement randomization, a list of 16 readers was compiled in no particular order on a Google sheet. Each participant was randomly assigned to one of the four treatment combinations using an `R` sampling code. This ensures that every participant had an equal probability of being assigned to any given treatment.
+To implement randomization, a list of 16 readers was compiled in no particular order on a Google sheet, ensuring that every participant had an equal probability of being assigned to any given treatment. Each participant was randomly assigned to one of the four treatment combinations using an `R` sampling code. This ensures that every participant had an equal probability of being assigned to any given treatment.
 
 ```{r, include = FALSE}
 # randomizing assignments
