@@ -307,25 +307,9 @@ Taken together, the exploratory analysis points to font size as the primary driv
 
 ## Hypothesis Testing
 
-To evaluate the effects of our factors and the interaction between them, we conducted a two-way ANOVA test at a significance level of $\alpha = 0.05$. This model to conduct this can be expressed as $$Y_{ijk} = \mu + \tau_i + \beta_j + (\tau\beta)_{ij}+ \epsilon_{ijk}$$ with i = 1, 2, 3; j = 1, 2, 3; k = 1, 2, 3, 4, 5, 6. The error term $\epsilon$ represents the variation between people.
+To evaluate the effects of our factors and the interaction between them, we conducted a two-way ANOVA test at a significance level of $\alpha = 0.05$. The model to conduct this can be expressed as $$Y_{ijk} = \mu + \tau_i + \beta_j + (\tau\beta)_{ij}+ \epsilon_{ijk}$$ with i = 1, 2, 3; j = 1, 2, 3; k = 1, 2, 3, 4, 5, 6. The error term $\epsilon$ represents the variation between people.
 
-Before conducting any testing, we first checked for the necessary assumptions, normality and homoscedasticity. The plots below test these assumptions:
-
-```{r, echo = FALSE, fig.align = 'center'}
-anova <- aov(`Time` ~ `Font Size` * `Font Color`, read_speed_new)
-
-par(mfrow = c(1, 2))
-plot(anova, which = 1:3)
-
-hist(anova$residuals,
-     main = "Histogram of Residuals",
-     xlab = "Residuals",
-     col = "lightblue")
-```
-
-From the Residuals vs Fitted plot, we see our data may be heteroscedastic, due to the slight funnel shape of the points scattered; this is further supported by the downward trend of the scale-location plot, which suggests heteroscedasticity. The Q-Q plot shows the points mostly following the line, which suggests normality; our histogram further supports this, as it follows a mostly normal shape. Thus, the ANOVA assumption for normality does hold in this case, but homoscedasticity may not. We still use the ANOVA model for analysis due to its fit to our factorial design experiment.
-
-After checking assumptions, we began the testing. We looked at three sets of hypotheses for this $3^2$ factorial design experiment:
+We looked at three sets of hypotheses for this $3^2$ factorial design experiment:
 
 :::callout
 1. The main effect of Font Size
@@ -371,8 +355,24 @@ $(\tau \beta)_{ij}$ represents the combination of our two treatments tested at a
 \end{center}
 :::
 
+\newpage
+Before conducting any testing, we first checked for the necessary assumptions, normality and homoscedasticity. The plots below test these assumptions:
 
-A two-way ANOVA test at a significance level of $\alpha = 0.05$ tests our hypotheses simultaneously, as follows:
+```{r, echo = FALSE, fig.align = 'center'}
+anova <- aov(`Time` ~ `Font Size` * `Font Color`, read_speed_new)
+
+par(mfrow = c(1, 2))
+plot(anova, which = 1:3)
+
+hist(anova$residuals,
+     main = "Histogram of Residuals",
+     xlab = "Residuals",
+     col = "lightblue")
+```
+
+From the Residuals vs Fitted plot, we see our data may be heteroscedastic, due to the slight funnel shape of the points scattered; this is further supported by the downward trend of the scale-location plot, which suggests heteroscedasticity. The Q-Q plot shows the points mostly following the line, which suggests normality; our histogram further supports this, as it follows a mostly normal shape. Thus, the ANOVA assumption for normality does hold in this case, but homoscedasticity may not. We still use the ANOVA model for analysis due to its fit to our factorial design experiment.
+
+After checking assumptions, we began the testing. A two-way ANOVA test at a significance level of $\alpha = 0.05$ tests our hypotheses simultaneously, as follows:
 
 ```{r, echo = FALSE}
 # generate ANOVA table
