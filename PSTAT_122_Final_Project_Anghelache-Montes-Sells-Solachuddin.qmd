@@ -61,9 +61,16 @@ Previous research has also examined how font size affects reading speed. For exa
 
 We are motivated to improve design choices for readability, thus we will be testing how visual text settings (font size, color) impact reading speed. Participants are instructed to read at the best fit speed at which information retention is highest for themselves. We define readability as the rate of reading words while maintaining a consistent level of comprehension, thus a faster rate means better readability in this experiment.
 
-## Factors and Treatment Structure
+## Factor Classification, Experimental Units, & Implementation 
+This experiment will be conducted as a $3^2$ factorial design with Completely Randomized Design (CRD) framework, where we have a total of 2 factors, each with 3 levels:
 
-There are two treatments, font size and font color, with three levels each: in order from highest to lowest contrast against a white background, black, red, and green font, and in order from smallest to largest text, 10 pt (small), 14 pt (medium), and 18 pt (large), creating nine unique treatment combinations:
+:::callout
+- Factor A: Font Size. This is a fixed factor, with three levels at 10 pt, 14 pt, or 18 pt.
+
+- Factor B: Font Color. This is a fixed factor, with three levels in green, red, or black.
+:::
+
+There are two treatments---font size and font color---with three levels each: in order from highest to lowest contrast against a white background, black, red, and green font, and in order from smallest to largest text, 10 pt, 14 pt, and 18 pt. This creates nine unique treatment combinations:
 
 :::callout
 - Small (10 pt), green font
@@ -85,33 +92,13 @@ There are two treatments, font size and font color, with three levels each: in o
 - Large (18 pt), black font
 :::
 
-## Experimental Units
+Factor A has three levels $(a = 3)$, and Factor B has three levels $(b = 3)$. With nine different treatment combinations $(a\times b)$, we have a total of 54 observations. These observations were obtained by assigning ten readers to three treatment combinations each and six readers to four combinations each through replication. This results in a balanced treatment design where there are an equal number of replicates $(n = 6)$ for each treatment combination such that: $$N = (n\times a \times b )= 6*3*3 =54\text{ total observations}$$
 
-There are 16 experimental units/individual readers in total. All but six readers read three times according to their randomized treatment assignment; the six read four times. The response variable is the reading speeds measured by the time taken (in seconds) to read the same 133-word excerpt.
-
-## Factors Classification
-
-This experiment will be conducted as a $3^2$ factorial design with a CRD framework, with two factors and three levels per factor:
-
-:::callout
-- Factor A: Font Size. This is a fixed factor, with three levels at 10 pt, 14 pt, or 18 pt.
-
-- Factor B: Font Color. This is a fixed factor, with three levels in green, red, or black.
-:::
-
-## Sample Size
-
-With nine different treatment combinations, as well as six readers per treatment combination, we have a total of 54 observations/readers randomly assigned to the treatment combinations.
-
-$$(10*3) + (6*4) = 54\text{ observations total}$$
-
-## Design Type: Complete Randomized Design
-
-When conducting this experiment, we did not use any blocking. With a total of 16 readers, we randomized the assignment of each treatment to three or four per person.
+Our experimental units are 16 individual readers spread out over 54 observations. To implement randomization, a list of our 16 readers was compiled in no particular order on a Google sheet. Each participant was randomly assigned treatment combinations using an `R` sampling code, found in the appendix. This ensures that every participant had an equal probability of being assigned to any given treatment. The response variable is the reading speeds measured by the time taken (in seconds) to read the same 133-word excerpt in three or four of the different formatting styles.
 
 ## Statistical Model
 
-For this completely randomized factorial design, we have 
+When conducting this experiment, we did not use any blocking. With a total of 16 readers, we randomized the assignment of each treatment with a code in R and replicated the list of readers and an equal number of replications for each treatment combination. For this balanced completely randomized factorial design, we have:
 
 :::callout
 1. Three levels for Factor A: Font Size
@@ -121,25 +108,12 @@ For this completely randomized factorial design, we have
 3. Six replicates within each treatment combination
 :::
 
-Therefore, the effects model can be expressed as: $$Y_{ijk} = \mu + \tau_i + \beta_j + (\tau\beta)_{ij}+ \epsilon_{ijk}$$ with i = 1, 2, 3; j = 1, 2, 3; k = 1, 2, 3, 4, 5, 6. The error term $\epsilon$ represents the variation between people.
+Therefore, the effects model can be expressed as:
 
-## Implementation
+$$Y_{ijk} = \mu + \tau_i + \beta_j + (\tau\beta)_{ij}+ \epsilon_{ijk}$$ 
+with i = 1, 2, 3; j = 1, 2, 3; k = 1, 2, 3, 4, 5, 6.
 
-To implement randomization, a list of 16 readers was compiled in no particular order on a Google sheet, ensuring that every participant had an equal probability of being assigned to any given treatment. Each participant was randomly assigned to one of the four treatment combinations using an `R` sampling code. This ensures that every participant had an equal probability of being assigned to any given treatment.
-
-```{r, include = FALSE}
-# randomizing assignments
-set.seed(21)
-
-text_settings <- c("black, small", "black, medium", "black, large",
-                   "red, small", "red, medium", "red, large",
-                   "green, small", "green, medium", "green, large")
-
-treatments <- rep(text_settings, each = 6)
-
-sample(treatments)
-
-```
+$(\tau\beta)_{ij}$ represents the interaction effect between front size and font color, and the random error term $\epsilon_{ijk}$ represents the random variation between observations, assumed to be normally distributed and i.i.d.
 
 
 # Data Collection
@@ -230,31 +204,25 @@ This process resulted in an updated dataset, still balanced, but now without out
 
 # outlier small/red is the min
 outliers_sr <- read_speed |>
-  filter(`Font Size` == "Small", `Font Color` == "Red")
-
-read_speed1 <- outliers_sr |>
-  filter(Time == min(outliers_sr$Time))
+  filter(`Font Size` == "Small", `Font Color` == "Red") |>
+  filter(Time == min(Time))
 
 # outlier small/green is both the min and max
 outliers_sg <- read_speed |>
-  filter(`Font Size` == "Small", `Font Color` == "Green")
-
-read_speed2 <- outliers_sg |>
-  filter(Time == max(outliers_sg$Time) |
-         Time == min(outliers_sg$Time))
+  filter(`Font Size` == "Small", `Font Color` == "Green") |>
+  filter(Time == max(Time) |
+         Time == min(Time))
 
 # outlier medium/green is the max
 outliers_mg <- read_speed |>
-  filter(`Font Size` == "Medium", `Font Color` == "Green")
-
-read_speed3 <- outliers_mg |>
-  filter(Time == max(outliers_mg$Time))
+  filter(`Font Size` == "Medium", `Font Color` == "Green") |>
+  filter(Time == max(Time))
 
 read_speed_clean <- read_speed |>
-  filter(Time != read_speed1$Time &
-          Time != read_speed2$Time[1] &
-          Time != read_speed2$Time[2] &
-          Time != read_speed3$Time)
+  filter(Time != outliers_sr$Time &
+          Time != outliers_sg$Time[1] &
+          Time != outliers_sg$Time[2] &
+          Time != outliers_mg$Time)
 
 read_speed_new <- read_speed_clean |>
   add_row(`Font Size` = as.factor(c("Small", "Small", "Small", "Medium")),
@@ -280,6 +248,7 @@ ggplot(read_speed_new, aes(x = `Font Size`,
   labs(y = "Reading Time (s)",
        title = "Figure 2: Updated Reading Time Comparisons with Boxplots") +
   theme_bw()
+
 ```
 
 Our new summary statistics (Table 3) and boxplots (Figure 2) essentially lead us to our previous observations. Our data still shows reading speed as quicker at a font size larger than small, and that the impact of font color is minimal in comparison with font size.
@@ -403,16 +372,176 @@ Future studies could strengthen the reliability of these results by using a larg
 Overall, the results of this experiment suggest that larger font sizes improve reading speed, whilst font color alone does not significantly affect reading performance. These findings highlight the importance of font size in design considerations when presenting written information or printed material. 
 
 
-
-
-
 # References
 
-Comparing the Legibility and Comprehension of Type Size, Font Selection and Rendering Technology of Onscreen Type (Scott B. Chandler) https://vtechworks.lib.vt.edu/server/api/core/bitstreams/4dc7b456-3ea7-4bca-93d4-d58b53101aed/content
+1. Chandler, S. B. (2001). Comparing the Legibility and Comprehension of Type Size, Font Selection and Rendering Technology of Onscreen Type. https://vtechworks.lib.vt.edu/server/api/core/bitstreams/4dc7b456-3ea7-4bca-93d4-d58b53101aed/content
+
 
 \newpage
-
 # Appendices
 
-```{r appendix, ref.label = knitr::all_labels(), echo = TRUE, eval = FALSE}
+1. Randomization of Treatment Combinations to Assign to Subjects:
+
+```{r, eval = FALSE}
+# randomizing assignments
+set.seed(21)
+
+text_settings <- c("black, small", "black, medium", "black, large",
+                   "red, small", "red, medium", "red, large",
+                   "green, small", "green, medium", "green, large")
+
+treatments <- rep(text_settings, each = 6)
+
+sample(treatments)
+```
+
+
+2. Data Collection Tables (Portion of Data & Summary Statistics):
+
+```{r, eval = FALSE}
+# get factors in their own columns
+# font color levels (highest to lowest contrast against white background): black (-1), red (0), green (1)
+# font size levels (smallest to largest font): small (-1), medium (0), large (1)
+data <- read.csv("Final_Data.csv")
+
+read_speed <- data |>
+  mutate("Font Color" = factor(Text.Settings,
+                               levels = c("black, small", "black, medium", "black, large",
+                                          "red, small", "red, medium", "red, large",
+                                          "green, small", "green, medium", "green, large"),
+                               labels = rep(c("Black", "Red", "Green"), each = 3)),
+         "Font Size" = factor(Text.Settings,
+                              levels = c("black, small", "black, medium", "black, large",
+                                          "red, small", "red, medium", "red, large",
+                                          "green, small", "green, medium", "green, large"),
+                              labels = rep(c("Small", "Medium", "Large"), times = 3))) |>
+  rename("Time" = Time..s.) |>
+  select(`Font Size`, `Font Color`, `Time`)
+
+kable(head(read_speed, n = 9),
+      caption = "Reading Time by Factors Data Collection")
+
+# get key summary stats of our data
+summary_stats <- read_speed |>
+  group_by(`Font Size`, `Font Color`) |>
+  summarise(Mean = round(mean(Time), 2),
+            SD = round(sd(Time), 2))
+
+kable(summary_stats,
+      col.names = c("Font Size", "Font Color", "Mean (s)", "SD (s)"),
+      caption = "Summary Statistics of Reading Time by Treatment Group (n = 6)")
+
+```
+
+
+3. Boxplots of Original Data:
+
+```{r, eval = FALSE}
+# boxplots to compare means
+ggplot(read_speed, aes(x = `Font Size`,
+                       y = `Time`,
+                       fill = `Font Color`)) +
+  scale_fill_manual(values = c("darkgray", "red", "green")) +
+  geom_boxplot() + 
+  labs(y = "Reading Time (s)",
+       title = "Figure 1: Reading Time Comparisons with Boxplots") +
+  theme_bw()
+```
+
+
+4. Updated Data without Outliers (New Summary Statistics Table & Boxplots):
+
+```{r, eval = FALSE}
+# remove outliers based on box plot
+
+# outlier small/red is the min
+outliers_sr <- read_speed |>
+  filter(`Font Size` == "Small", `Font Color` == "Red") |>
+  filter(Time == min(Time))
+
+# outlier small/green is both the min and max
+outliers_sg <- read_speed |>
+  filter(`Font Size` == "Small", `Font Color` == "Green") |>
+  filter(Time == max(Time) |
+         Time == min(Time))
+
+# outlier medium/green is the max
+outliers_mg <- read_speed |>
+  filter(`Font Size` == "Medium", `Font Color` == "Green") |>
+  filter(Time == max(Time))
+
+read_speed_clean <- read_speed |>
+  filter(Time != outliers_sr$Time &
+          Time != outliers_sg$Time[1] &
+          Time != outliers_sg$Time[2] &
+          Time != outliers_mg$Time)
+
+read_speed_new <- read_speed_clean |>
+  add_row(`Font Size` = as.factor(c("Small", "Small", "Small", "Medium")),
+          `Font Color` = as.factor(c("Green", "Red", "Green", "Green")),
+          Time = c(29.68, 22.88, 25.79, 22.81))
+
+# new summary statistics
+summary_stats_new <- read_speed_new |>
+  group_by(`Font Size`, `Font Color`) |>
+  summarise(Mean = round(mean(Time), 2),
+            SD = round(sd(Time), 2))
+
+kable(summary_stats_new,
+      col.names = c("Font Size", "Font Color", "Mean (s)", "SD (s)"),
+      caption = "Updated Summary Statistics of Reading Time by Treatment Group (n = 6)")
+
+# new boxplot w/o outliers
+ggplot(read_speed_new, aes(x = `Font Size`,
+                             y = `Time`,
+                             fill = `Font Color`)) +
+  scale_fill_manual(values = c("darkgray", "red", "green")) +
+  geom_boxplot() + 
+  labs(y = "Reading Time (s)",
+       title = "Figure 2: Updated Reading Time Comparisons with Boxplots") +
+  theme_bw()
+```
+
+
+5. Interaction Plot:
+
+```{r, eval = FALSE}
+# interaction plot
+ggplot(summary_stats_new, aes(x = `Font Size`,
+                          y = Mean,
+                          color = `Font Color`,
+                          group = `Font Color`)) +
+  scale_color_manual(values = c("black", "red", "green")) +
+  geom_point() +
+  geom_line() +
+  labs(y = "Mean Reading Time (s)",
+       title = "Figure 3: Interaction Plot of Font Size and Font Color") + 
+  theme_bw()
+```
+
+
+6. Checking Assumptions with Plots:
+
+```{r, eval = FALSE}
+anova <- aov(`Time` ~ `Font Size` * `Font Color`, read_speed_new)
+
+par(mfrow = c(1, 2))
+plot(anova, which = 1:3)
+
+hist(anova$residuals,
+     main = "Histogram of Residuals",
+     xlab = "Residuals",
+     col = "lightblue")
+```
+
+
+7. ANOVA Table:
+
+```{r, eval = FALSE}
+# generate ANOVA table
+kable(tidy(anova),
+      digits = 3,
+      col.names = c("Sources of Variation", "degrees of freedom", "Sum of Squares", "Mean Square", "F", "p-value"),
+      caption = "ANOVA Table")
+
 ```
