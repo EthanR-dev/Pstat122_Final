@@ -1,6 +1,6 @@
 ---
-title: 'Final Project'
-subtitle: "PSTAT122: Design and Analysis of Experiments" 
+title: 'Testing the Effects of Font Size and Color on Reading Speed'
+subtitle: "PSTAT122: Design and Analysis of Experiments Final Project" 
 
 author:
   - name: "Winter 2026"
